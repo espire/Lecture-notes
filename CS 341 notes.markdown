@@ -1,5 +1,6 @@
-CS 341: Algorithms
-==================
+>Eli Spiro's lecture notes  
+>University of Waterloo  
+>CS 341: Algorithms  
 
 What CS 341 is about
 ====================
@@ -220,8 +221,7 @@ so there exists n\_2, c\_2 > 0 such that for all n > n\_2, h(n) <= c\_2 * max{f(
 <= c\_2 * {f(n) + g(n)}
 so h(n) e O(f(n) + g(n))
 
-Little-o Notation
------------------
+### Little-o Notation
 * "grows more slowly than"
 * f(n) e o(g(n)) if for every constant c > 0, there exists a constant n\_0 such that for all n > n\_0, 0 <= f(n) < c*g*(n).
 * Think of this as: it's true even if positive c is very small.
@@ -230,8 +230,7 @@ Little-o Notation
 * We can be more precise than O-notation
 	* Running time is 3n^2 + o(n^3/2)
 	
-Little-w (omicron) notation
----------------------------
+### Little-w (omicron) notation
 * "grows more slowly than"
 * f(n) e w(g(n)) if for every constant c > 0, there exists a constant n\_0 such that for all n > n\_0, 0 <= f(n) > c*g(n).
 * Think of this as: it's true even if positive c is very large.
@@ -244,20 +243,17 @@ Little-w (omicron) notation
 	* so lim m->inf log^k(m)/m^p = 0
 	* log\_b m e o(m^p)
 
-Relationships Between Order Notations
--------------------------------------
+### Relationships Between Order Notations
 see slide
 
-Algebra of Order Notations
---------------------------
+### Algebra of Order Notations
 see slide
 
-Useful Summation Formulae
--------------------------
+### Useful Summation Formulae
 see slide
 
 Analyzing Pseudo-code
-=====================
+---------------------
 * Count the primitive operations instead of just statements
 	* For example, count comparisons while sorting
 * Do not let overhead dominate
@@ -266,14 +262,13 @@ Analyzing Pseudo-code
 	* Is it within a loop?
 	* Generally, how often is it executed?
 	
-Loops
------
+### Loops
 * Generally work from innermost loops to outermost loops.
 * Loops are O or Th of a function of the input size and the control variables
 * Rough bound: iterations * worst case cost
 * Pricise bound: sum over iterations of cost of each iteration
 
-### Example loop analysis
+#### Example loop analysis
 * for i = 1..n do {Operation A}
 * if A costs ci
 	* Rough bound: O(n) for each iteration, O(n^2) total
@@ -283,14 +278,13 @@ Loops
 	* Rough bound: O(n) for each iteration, O(n^2) total
 	* ∑(i=1..n)cn/2^i = cn(∑(i=0..n) <= cn(1/(1 - 1/2) - 1) e O(n)
 	Since the first iteration alone is Om(n), the total is Th(n)
-* if A costs clogi
+* if A costs c\*logi
 	* Rough bound is O(logn) for each iteration, O(nlogn) total
 	* More precise is a tricky sum
 	* We can avoid the analysis by showing that the sum is Om(nlogn)
 	* To show the total is really Th(nlogn), sum the last half:
 
-Divide and Conquer
-------------------
+### Divide and Conquer
 * Mergesort
 	* given list of n elements
 	* split the list into two lists length n/2
@@ -298,3 +292,146 @@ Divide and Conquer
 	* merge the sorted lists
 * Analysis:
 	* T(n) is the number of comparisons to sort n items. T(1) = 0, T(2) = 1
+	* T(n) = 0 if n = 1
+	* if n > 1... T(n) = T(fl[n/2] + T(cl[n/2]) + Th(n))
+
+Lecture 4: September 22
+-----------------------
+
+### Bentley's Problem
+<pre>
+Given n numbers in an array: A[1..n]
+calculate max(i<=j<=n)∑(R=i..j)A[k]
+Example: 31 -41 59 26 -53 58 97 -93 -23
+</pre>
+
+#### Solution 1
+<pre>
+max := 0
+for i := 1 to n do
+	for j := 1 to n do
+		// now computing sum of ahsdfuashdf array A[i]..A[j]
+		sum := 0
+		for R = i to j do
+			sum := sum + A[k]
+			// compare to maximum
+		if sum > max then max = sum
+</pre>
+#### Analysis
+<pre>
+Sum statement is done in O(1); one elementary operation
+so the innermost loop costs j - i + 1
+for the middle loop each iteration costs j - i + 2, counting the sum > max comparison, total cost is ∑(j=i..n)(j-i+2)
+For the outer lop we get a total cost of ∑(i=1..n)∑(j=i..n)(j-i+2)
+Let j - i + 2 = m
+∑(i=1..m)∑(m=2..n-i+2) when j=i then m=2, when j=n m=n-i+1
+= 1/2 * ∑(i=1..n)[(n-i+2)(n-i+3)-2]
+Let n-i+1 = p. Ten when i=1 p=n, when i = n p=1
+= 1/2 * ∑(p=1..n)[(p+1)(p+2)-2] = 1/2 * ∑(p=1..n)[p^2 + 3p]
+= 1/2 * [ n(n+1)(2n+2)/6 + 3n(n+1)/2 ]
+= n/6 [n + 5][n + 1] e Th(n^3)
+</pre>
+#### Solution 2
+<pre>
+max := 0
+for i := 1 to n do
+	sum := 0
+	for j := 1 to n do
+		sum := sum + A[j]
+			// sum is now the sum of subarray A[i]..A[j]
+		if sum > max then max = sum
+</pre>
+#### Analysis
+<pre>
+∑(i=1..n)∑(j=i..n) 2
+= 2*∑(i=1..n)(n-i+1)
+Let n-i+1 = p, if i = n then p = 1, if i = 1 then p = n
+= 2*∑(p=1..n) p
+= n(n+1) e Th(n^2)
+</pre>
+
+#### Solution 3: Divide and Conquer
+* Split the array into two parts
+* Get the best solution for each half, using a recursive call
+* Also get the best solution with subarray going over the dividing lines
+* Finally, get the max of all three possibilities
+<pre>
+recursive maxsum(low, hi)
+	if low > hi return 0 // zero elements
+	if low = hi return max(0, A[low])
+	mid := (low + hi)/2
+	// find max from the partition down to the left
+	leftmax := sum := 0
+	for i:= mid down to low
+		sum := sum + A[i]
+		leftmax := max(leftmax, sum)
+	//find max on right side
+	rightmax := sum := 0
+	for i := mid+1 to hi
+		sum := sum + A[i]
+		rightmax := max(rightmax, sum)
+	return max{leftmax + rightmax, maxsum(low,mid), maxsum(med+1, hi)}
+</pre>
+#### Analysis
+* Loopes are not nested. We can show that the worst of each loop is O(n).
+* So it would be the same recursive sort function as used in MergeSort (above).
+
+### Floors and Ceilings
+* In practice, they are often neglected.
+* To be precise, we should not do that!
+* It is nearly always possible to evaluate them, but often messy.
+* In this course, we gloss over them, which is not always going to be acceptable.
+
+### Solving Recurrences
+* Method 1: recursion trees
+* Method 2: master theorem
+* Method 3: guess and check
+* to be studied in the next unit; for now, solve them "ad-hoc"
+
+### Simple Merge Sort Analysis
+* A simple analysis gives us a good guess:
+<pre>
+Assume n = 2^k. then
+T(n) <= cn + 2T(n/2) <= cn + 2{cn/2 + 2T(/4)}
+	<= 2cn + 4T(n/4) <= ... (continuing)
+	<= icn + 2^i T(n/2^i) (in general)
+	<= kcn + n T(1) (when i is finally k)
+So T(n) e O(n log n) since k = log n.
+</pre>
+#### More Thorough Analysis
+* Write it properly
+* Prove T(n) <= cn log n by induction on n.
+* Base cas: n = 1. True since T(n) = 0.
+* Inductive step: assume T(k_ <= ck log k for k < n, and prove true for k = n.
+<pre>
+T(n) <= T(fl[n/2]) + T(cl[n/2]) + an
+<= c*fl[n/2]*log fl[n/2] + c*fl[n/2]*log cl[n/2] + an
+<= c*fl[n/2]*log(n/2) + c*cl[n/2]*log(n) + an
+<= c*fl[n/2]*(log n - 1) + c*cl[n/2]*log(*) + an
+= cn*log(n) - c*fl[n/2] + an
+<= cn*log(n) - c(n/2 - 1/2) + an = cn*log(n) + (a - c/2)n + c/2
+<= cn*log(n) for, say, c = 4a
+</pre>
+### A general algorithmic paradigm
+* Divide: separate the problem into subproblems
+* Conquer: solve the subproblems recursively
+* Combine: use subproblem results ot derive the result
+* Examples: binary search, QuickSort, MergeSort
+
+#### When can we use Divide & Conquer?
+* original problem is easily decomposable into subproblems
+* combining problems is not costly
+* subproblems are about the same size
+
+### Multiplication of Large Integers (decimal digits)
+* An actual implementation would use words in binary, but the idea is the same
+* Primitive operation: multiplying two digits (or words)
+* Addition is less expensive so we neglect it now.
+	* Later we'll need to show the addition's cost is not asymptotically dominant
+#### A better D&C algorithm
+* Split the first number into w*10^(n/2) + x, and the second to y*10^(n/2) + z
+* uhhh... then stuff. I wasn't paying attention here.
+#### Analysis
+* Recurrence is now T(n) = 3T(n/2) + Th(n), T(1) = 1
+* We eventually show that this has the solution T(n) e O(n^log3)
+	* Actually, this can be done better!
