@@ -235,7 +235,7 @@ const int n = 50;
 int tally;
 void total() {
 	int count;
-	for(count = 1; count <= n; count++)
+	for(count = 1; count ≤ n; count++)
 		tally++;
 }
 </pre>
@@ -291,7 +291,7 @@ void wait(semaphore s) {
 
 void signal(semaphore s) {
 	s.count++;
-	if (s.count <= 0) {
+	if (s.count ≤ 0) {
 		// remove a thread from s.queue
 		// place the thread in the ready queue
 	}
