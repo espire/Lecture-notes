@@ -145,7 +145,7 @@ Why use order notation?
 
 Definition
 ----------
-* f(n) is in O(g(n)) if there exist constants c > 0 and n\_0 > 0 such that for all n > n\_0, 0 <= f(n) <= cg(n).
+* f(n) is in O(g(n)) if there exist constants c > 0 and n\_0 > 0 such that for all n > n\_0, 0 ≤ f(n) ≤ cg(n).
 * this properly says: f(n) is in O(g(n)), that is to say: f(n) e O(g(n)). Sloppier is f(n) = O(g(n))
 * Basically, at some point, f(n) will creep under a multiple of g(n).
 * We are considering the asymptotic behaviour, and we do not care about f(n) for small values of n.
@@ -153,14 +153,14 @@ Definition
 Problem 1: Show that f(n) e O(g(n)) when f(n) < 3n^2 + 9 and g(n) = n^2.  
 We could set c = 4. Then f(n) = 3n^2 + 9 < 4n^2 which is true when n > 3.  
 So we have f(n) e O(g(n)) with n\_0 = 3 and c = 4.  
-In general, to show that f(n) <= c\*g(n), we try to show that f(n) <= constant * most significant term in g(n) <= c*g(n))  
+In general, to show that f(n) ≤ c\*g(n), we try to show that f(n) ≤ constant * most significant term in g(n) ≤ c*g(n))  
 
 If g(n) = n^2 - n - 5? That's = n^2/3 + (n^2 / 3 - n) + (n^2 / 3 - 5)  
 n^2 / 3 - n > 0 when n > 3.  
 n^2 / 3 - 5 > 0 when n > 4.  
 We choose n_0 to be 4.  
-n^2 / 3 < g(n) if n > 3 and n > 4, so we set c = 12... 4n^2 <= c*g(n)  
-So for n > n_0 = 4 we get f(n) <= 4n^2 <= c*gn if c = 12.
+n^2 / 3 < g(n) if n > 3 and n > 4, so we set c = 12... 4n^2 ≤ c*g(n)  
+So for n > n_0 = 4 we get f(n) ≤ 4n^2 ≤ c*gn if c = 12.
 
 * Using O(.) notation:
 	* When discussing an algorithm, it means the worst-case running time. That's not always the best description.
@@ -169,7 +169,7 @@ So for n > n_0 = 4 we get f(n) <= 4n^2 <= c*gn if c = 12.
 	* We don't usually see O(n^2 + 3n), though they are technically correct.
 	* O(1): bounded by a constant, but unclear without context
 	* What about O(n + m)? A function dependent on two variables.
-		* f(n, m) e O(m + n) => There is c > 0, n\_0 > 0, m_0 > 0, such that for all n > n\_0 and all m > m\_0, 0 <= f(n, m) < c(m + n)
+		* f(n, m) e O(m + n) => There is c > 0, n\_0 > 0, m_0 > 0, such that for all n > n\_0 and all m > m\_0, 0 ≤ f(n, m) < c(m + n)
 
 Omega Notation
 --------------
@@ -196,10 +196,10 @@ consider n = 1024, so logn = 10
 100 ~= 102.4
 
 Theta problem: Show that f(n) e Th(g(n)) if f(n) = n^2 + n^3/2 + nlogn, g(n) = (n c 2) = n(n - 1) / 2  
-The dominant term is n^2. n^3/2 < n^2, nlogn <= n^2 for n > 2  
+The dominant term is n^2. n^3/2 < n^2, nlogn ≤ n^2 for n > 2  
 f(n) = n^2 + n^3/2 + nlogn < n^2 + n^2 + n^2 = 3n^2  
-cg(n) = c/2 * (n^2 -n) = c/2 * (n^2 / 2 + n^2 / 2 - n) so c/2 * n^2 / 2 <= c*gn if n<=2  
-So we get f(n) <= 3n^2 <= c/2 * n^2 / 2 <= c*gn if we pick c = 12, so f(n) e O(g(n))  
+cg(n) = c/2 * (n^2 -n) = c/2 * (n^2 / 2 + n^2 / 2 - n) so c/2 * n^2 / 2 ≤ c*gn if n≤2  
+So we get f(n) ≤ 3n^2 ≤ c/2 * n^2 / 2 ≤ c*gn if we pick c = 12, so f(n) e O(g(n))  
 For n >= 1 we have f(n) = n^2 + n^3/2 + nlogn >= n^2 / 2 >= n(n - 1)/2 = g(n)  
 So f(n) e Om(g(n)) with c = 1 and n_0 = 1.  
 Combined, we have f(n) e Th(g(n)).
@@ -212,18 +212,18 @@ Show that O(f(n) + g(n)) = O(max{f(n),g(n)})
 --------------------------------------------
 h(n) e O(f(n) + O(g(n)))
 There exists n\_0, c\_1>0 such that for all n > n\_0, h(n) < c\_1 * (f(n) + g(n))
-<= c\_1 * (max{f(n), g(n)} + max{f(n), g(n)})
-<= 2c\_1 * (max{f(n), g(n)})
+≤ c\_1 * (max{f(n), g(n)} + max{f(n), g(n)})
+≤ 2c\_1 * (max{f(n), g(n)})
 so h(n) e O(max{f(n), g(n)})
 ----------------------------
 h(n) e O(max{f(n), g(n)})
-so there exists n\_2, c\_2 > 0 such that for all n > n\_2, h(n) <= c\_2 * max{f(n), g(n)}
-<= c\_2 * {f(n) + g(n)}
+so there exists n\_2, c\_2 > 0 such that for all n > n\_2, h(n) ≤ c\_2 * max{f(n), g(n)}
+≤ c\_2 * {f(n) + g(n)}
 so h(n) e O(f(n) + g(n))
 
 ### Little-o Notation
 * "grows more slowly than"
-* f(n) e o(g(n)) if for every constant c > 0, there exists a constant n\_0 such that for all n > n\_0, 0 <= f(n) < c*g*(n).
+* f(n) e o(g(n)) if for every constant c > 0, there exists a constant n\_0 such that for all n > n\_0, 0 ≤ f(n) < c*g*(n).
 * Think of this as: it's true even if positive c is very small.
 * An easier definition: f(n) e o(g(n)) if lim\_n->inf f(n)/g(n) = 0
 * Useful for questions like "can we sort it in o(nlogn) time?"
@@ -232,7 +232,7 @@ so h(n) e O(f(n) + g(n))
 	
 ### Little-w (omicron) notation
 * "grows more slowly than"
-* f(n) e w(g(n)) if for every constant c > 0, there exists a constant n\_0 such that for all n > n\_0, 0 <= f(n) > c*g(n).
+* f(n) e w(g(n)) if for every constant c > 0, there exists a constant n\_0 such that for all n > n\_0, 0 ≤ f(n) > c*g(n).
 * Think of this as: it's true even if positive c is very large.
 * An easier definition: f(n) e o(g(n)) if lim\_n->inf f(n)/g(n) = inf
 * how do n^k and a^n (a > 1) compare?
@@ -276,7 +276,7 @@ Analyzing Pseudo-code
 		* ∑(i=1..n) ci = cn(n+1)/2 = cn^2/2 + cn/2 e Th(n^2)
 * If A costs cn/2
 	* Rough bound: O(n) for each iteration, O(n^2) total
-	* ∑(i=1..n)cn/2^i = cn(∑(i=0..n) <= cn(1/(1 - 1/2) - 1) e O(n)
+	* ∑(i=1..n)cn/2^i = cn(∑(i=0..n) ≤ cn(1/(1 - 1/2) - 1) e O(n)
 	Since the first iteration alone is Om(n), the total is Th(n)
 * if A costs c\*logi
 	* Rough bound is O(logn) for each iteration, O(nlogn) total
@@ -301,7 +301,7 @@ Lecture 4: September 22
 ### Bentley's Problem
 <pre>
 Given n numbers in an array: A[1..n]
-calculate max(i<=j<=n)∑(R=i..j)A[k]
+calculate max(i≤j≤=n)∑(R=i..j)A[k]
 Example: 31 -41 59 26 -53 58 97 -93 -23
 </pre>
 
@@ -398,27 +398,27 @@ recursive maxsum(low, hi)
 
 <pre>
 Assume n = 2^k. then
-T(n) <= cn + 2T(n/2) <= cn + 2{cn/2 + 2T(/4)}
-	<= 2cn + 4T(n/4) <= ... (continuing)
-	<= icn + 2^i T(n/2^i) (in general)
-	<= kcn + n T(1) (when i is finally k)
+T(n) ≤ cn + 2T(n/2) ≤ cn + 2{cn/2 + 2T(/4)}
+	≤ 2cn + 4T(n/4) ≤ ... (continuing)
+	≤ icn + 2^i T(n/2^i) (in general)
+	≤ kcn + n T(1) (when i is finally k)
 So T(n) e O(n log n) since k = log n.
 </pre>
 
 #### More Thorough Analysis
 * Write it properly
-* Prove T(n) <= cn log n by induction on n.
+* Prove T(n) ≤ cn log n by induction on n.
 * Base cas: n = 1. True since T(n) = 0.
-* Inductive step: assume T(k_ <= ck log k for k < n, and prove true for k = n.
+* Inductive step: assume T(k) ≤ ck log k for k < n, and prove true for k = n.
 
 <pre>
-T(n) <= T(fl[n/2]) + T(cl[n/2]) + an
-<= c*fl[n/2]*log fl[n/2] + c*fl[n/2]*log cl[n/2] + an
-<= c*fl[n/2]*log(n/2) + c*cl[n/2]*log(n) + an
-<= c*fl[n/2]*(log n - 1) + c*cl[n/2]*log(*) + an
+T(n) ≤ T(fl[n/2]) + T(cl[n/2]) + an
+≤ c*fl[n/2]*log fl[n/2] + c*fl[n/2]*log cl[n/2] + an
+≤ c*fl[n/2]*log(n/2) + c*cl[n/2]*log(n) + an
+≤ c*fl[n/2]*(log n - 1) + c*cl[n/2]*log(*) + an
 = cn*log(n) - c*fl[n/2] + an
-<= cn*log(n) - c(n/2 - 1/2) + an = cn*log(n) + (a - c/2)n + c/2
-<= cn*log(n) for, say, c = 4a
+≤ cn*log(n) - c(n/2 - 1/2) + an = cn*log(n) + (a - c/2)n + c/2
+≤ cn*log(n) for, say, c = 4a
 </pre>
 
 ### A general algorithmic paradigm
