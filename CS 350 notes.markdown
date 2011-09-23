@@ -1,5 +1,6 @@
-CS 350: Operating Systems
-=========================
+>Eli Spiro's lecture notes  
+>University of Waterloo  
+>CS 341: Algorithms
 
 OS Philosophy
 -------------
@@ -303,15 +304,15 @@ void signal(semaphore s) {
 	
 ### OS/161 Semaphores
 <pre>
-	struct semaphore {
-		char *name;
-		volatile int count;
-	};
-	
-	struct semaphore *sem.create(const char *name, int initial_count);
-	void P(struct semaphore *);
-	void V(struct semaphore *);
-	void sem.destroy(struct semaphore *);
+struct semaphore {
+	char *name;
+	volatile int count;
+};
+
+struct semaphore *sem.create(const char *name, int initial_count);
+void P(struct semaphore *);
+void V(struct semaphore *);
+void sem.destroy(struct semaphore *);
 </pre>
 
 * see kern/include/synch.h, kern/include/sync.c
@@ -341,12 +342,14 @@ V(s);
 P(s);
 remove item from the list (call list remove front())
 </pre>
+
 * suppose the list's length cannot exceed N
 * producers should wait if the list is full
 * use an additional semaphore
 	* Full is used to prevent overfilling: how many spaces are filled?
 	* Empty is used to prevent overemptying: how many spaces are free?
 	* The producer needs an empty spot, and the consumer needs a full spot.
+
 <pre>
 struct semaphore *full;
 struct semaphore *empty;

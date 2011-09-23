@@ -317,6 +317,7 @@ for i := 1 to n do
 			// compare to maximum
 		if sum > max then max = sum
 </pre>
+
 #### Analysis
 <pre>
 Sum statement is done in O(1); one elementary operation
@@ -331,6 +332,7 @@ Let n-i+1 = p. Ten when i=1 p=n, when i = n p=1
 = 1/2 * [ n(n+1)(2n+2)/6 + 3n(n+1)/2 ]
 = n/6 [n + 5][n + 1] e Th(n^3)
 </pre>
+
 #### Solution 2
 <pre>
 max := 0
@@ -341,6 +343,7 @@ for i := 1 to n do
 			// sum is now the sum of subarray A[i]..A[j]
 		if sum > max then max = sum
 </pre>
+
 #### Analysis
 <pre>
 ∑(i=1..n)∑(j=i..n) 2
@@ -355,6 +358,7 @@ Let n-i+1 = p, if i = n then p = 1, if i = 1 then p = n
 * Get the best solution for each half, using a recursive call
 * Also get the best solution with subarray going over the dividing lines
 * Finally, get the max of all three possibilities
+
 <pre>
 recursive maxsum(low, hi)
 	if low > hi return 0 // zero elements
@@ -372,6 +376,7 @@ recursive maxsum(low, hi)
 		rightmax := max(rightmax, sum)
 	return max{leftmax + rightmax, maxsum(low,mid), maxsum(med+1, hi)}
 </pre>
+
 #### Analysis
 * Loopes are not nested. We can show that the worst of each loop is O(n).
 * So it would be the same recursive sort function as used in MergeSort (above).
@@ -388,8 +393,9 @@ recursive maxsum(low, hi)
 * Method 3: guess and check
 * to be studied in the next unit; for now, solve them "ad-hoc"
 
-### Simple Merge Sort Analysis
+### Simple MergeSort Analysis
 * A simple analysis gives us a good guess:
+
 <pre>
 Assume n = 2^k. then
 T(n) <= cn + 2T(n/2) <= cn + 2{cn/2 + 2T(/4)}
@@ -398,11 +404,13 @@ T(n) <= cn + 2T(n/2) <= cn + 2{cn/2 + 2T(/4)}
 	<= kcn + n T(1) (when i is finally k)
 So T(n) e O(n log n) since k = log n.
 </pre>
+
 #### More Thorough Analysis
 * Write it properly
 * Prove T(n) <= cn log n by induction on n.
 * Base cas: n = 1. True since T(n) = 0.
 * Inductive step: assume T(k_ <= ck log k for k < n, and prove true for k = n.
+
 <pre>
 T(n) <= T(fl[n/2]) + T(cl[n/2]) + an
 <= c*fl[n/2]*log fl[n/2] + c*fl[n/2]*log cl[n/2] + an
@@ -412,6 +420,7 @@ T(n) <= T(fl[n/2]) + T(cl[n/2]) + an
 <= cn*log(n) - c(n/2 - 1/2) + an = cn*log(n) + (a - c/2)n + c/2
 <= cn*log(n) for, say, c = 4a
 </pre>
+
 ### A general algorithmic paradigm
 * Divide: separate the problem into subproblems
 * Conquer: solve the subproblems recursively
@@ -428,9 +437,11 @@ T(n) <= T(fl[n/2]) + T(cl[n/2]) + an
 * Primitive operation: multiplying two digits (or words)
 * Addition is less expensive so we neglect it now.
 	* Later we'll need to show the addition's cost is not asymptotically dominant
+
 #### A better D&C algorithm
 * Split the first number into w*10^(n/2) + x, and the second to y*10^(n/2) + z
 * uhhh... then stuff. I wasn't paying attention here.
+
 #### Analysis
 * Recurrence is now T(n) = 3T(n/2) + Th(n), T(1) = 1
 * We eventually show that this has the solution T(n) e O(n^log3)
