@@ -365,3 +365,67 @@ P(full);
 remove item from the list (call list remove front())
 V(empty);
 </pre>
+
+Tuesday, September 27, 2011
+---------------------------
+
+### ???
+* TextMate went into a crash loop, so I missed some slides here while I rebooted
+
+### Thread Blocking
+* If a thread can't do anything useful because it's waiting for data to become available, why run it?
+* Put the thread to sleep: the scheduler can block threads.
+
+### Thread Blocking in OS/161
+* OS/161 has thread.sleep(), which is voluntary like thread.yield() except the scheduler will not wake it until thread.wakeup() is explicitly called.
+
+### Thread States
+* Running: the thread is running RIGHT THIS MOMENT. Only one running thread per processor.
+* Ready: The thread isn't waiting on anything; it's ready to get control and run right away.
+* Blocked: Waiting for something, so it cannot run
+* Threads cannot go from ready to blocked, since they can't call any code that will make them wait.
+* Threads go from blocked to ready when what they're waiting for completes and calls an interrupt.
+
+### OS/161 Semaphores: V() kern/thread/synch.c
+<pre>
+void V(struct semaphore *sem)
+{
+	int sp1;
+	assert(sem != NULL);
+	sp1 = sp1high();
+	sem->count++;
+	assert(sem->count>0);
+	thread_wakeup(sem);
+	splx(spl);
+}
+</pre>
+
+### OS/161 Locks
+* A thread acquires and releases a lock, to enforce mutual exclusion.
+* Only the thread that acquired the lock can release it!
+* Locks only enforce mutual exclusion, while semaphores can also synchronize work.
+
+### Condition Variables
+* Allow threads to wait for arbitrary conditions inside critical sections.
+* If the condition is false, a thread can wait on it until it becomes true.
+* Other threads that discover the condition to be true will signal or broadcast to notify other threads.
+* When a thread becomes blocked, it must release its lock.
+  
+#### Example:
+* We have a critical section controlled by a lock.
+* Thread 1 is able to acquire the lock, so it enters the critical section.
+* Upon entering, it tests a condition variable. 
+	* If false, Thread 1 must release the lock.
+* Thread 2 might change the variable to be true. Then it signals to Thread 1, which becomes ready.
+* Thread 1 must acquire the lock to re-enter the critical section.
+
+### Monitors
+* A monitor is a programming construct that provides synchronized access to shared data.
+* It has data, which is accessed from synchronized functions
+<pre>
+public syncchronized produce() {
+	while(count == MAX)
+		sleep();
+	notify();
+}
+</pre>

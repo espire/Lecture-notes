@@ -424,7 +424,7 @@ T(n) ≤ T(fl[n/2]) + T(cl[n/2]) + an
 ### A general algorithmic paradigm
 * Divide: separate the problem into subproblems
 * Conquer: solve the subproblems recursively
-* Combine: use subproblem results ot derive the result
+* Combine: use subproblem results to derive the result
 * Examples: binary search, QuickSort, MergeSort
 
 #### When can we use Divide & Conquer?
@@ -446,3 +446,76 @@ T(n) ≤ T(fl[n/2]) + T(cl[n/2]) + an
 * Recurrence is now T(n) = 3T(n/2) + Th(n), T(1) = 1
 * We eventually show that this has the solution T(n) e O(n^log3)
 	* Actually, this can be done better!
+	* The overhead makes this expensive for small n
+	* There are asymptotically better solutions.
+
+### What's next?
+* We have studied various algorithms
+* We have seen a few recursions
+	* THey are often the form T(n) = aT(n/a) + Th(n)
+
+Solving Recurrences
+-------------------
+* Recursion Trees
+* Master Theorem
+* Guess and Check
+
+### Recursion Trees
+* Analyze MergeSort
+* Either we are in a base case, or we are in a recursive call.
+* Partition the numbers and then MergeSort on each half.
+* Given a recurrence T(1) = 0, T(n) = T(fl[n/2] + T(cl[n/2] + Th(n))), we want to display the computation as a tree
+	* Each time the function is called, the work is represented by a node in the tree
+	* Label each node by the combine time involved.
+	* Leaves have a base case cost T(0).
+	* We sum work across all levels, including leaves.
+* We see a messy summation tree. It's not going to be easy to work with all these floors and ceilings.
+	* We say that all values of n are powers of two, and we wash our hands of floors and ceilings.
+	* This is a sloppy recursion, but it works and we can easily sum values now.
+* The work can be domanated by the nodes, or dominated by the leaves, or of the same order in both.
+
+### Working with Recursion Trees
+1. Figure out general pattern of time cost labels.
+2. Sum the first few levels.
+3. Figure out the pattern of the level sums.
+4. Compute the sum of all internal nodes.
+5. Figure out the height of the tree.
+6. Compute the number of the base case nodes.
+7. Add up all leaves of the tree.
+8. Compute the final total of all the labels.
+
+### The Master Theorem
+> One theorem to bring them all, and in the darkness bind them  
+> In the land of algorithms, where the shadows lie
+
+* Solves T(n) = aT(n/b) + f(n)
+	* If we have something more complicated, either we get sloppy or we don't use the theorem.
+* We have (n/b) denote cl or fl.
+* T(n) is:
+	* Th(n^(log b (a))) if f(n) e O(n^(log b a-eps)) (esp is some small value)
+	* Th(n^(log b (a)) * lg(n)) if f(n) e O(n^(log b a))
+	* Th(f(n)) if f(n) e Ω(n^(log b a+eps)) and a\*f(n/b) ≤ c\*f(n)
+* Not everything is covered by the theorem.
+
+#### Using the Theorem
+* Binary search is a very simple recursion, and it has no combine step
+* Example T(n) = 3T(n/3) + n^2
+	* Case 3
+	* Regularity examples (regularity is necessary for case 3)
+	
+<pre>
+Need af(n/b ≤ cf(n) with c < 1)
+f(n) = n
+af(n/b) = a(n/b) ≤ cn if a/b ≤ c
+So we have regularity holding if c e [a/b, 1), which is if a/b < 1.
+
+f(n) = n^2
+af(n/b) < a(n^2/n^2) ≤ cn^2 if c e[a/b^2, 1)
+
+f(n) = n log n
+af(n/b) - a(n/b)log(n/b)^2 ≤ cnlogn
+We need a/b(logn - logb) ≤ clogn
+Need a/b[1 - logb/logn ≤ c, true if c e [a/b, 1)
+</pre>
+
+### Proof Sketch of Master Theorem
